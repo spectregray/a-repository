@@ -2,7 +2,9 @@ package utils
 
 type MinHeap []int
 
+func (h MinHeap) Len() int           { return len(h) }
 func (h MinHeap) Less(i, j int) bool { return h[i] < h[j] }
+func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
 
 // function Len() for type MinHeap with alias mh that returns int
 // what's the point of this?
