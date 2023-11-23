@@ -11,18 +11,15 @@ func Check(e error) {
 	}
 }
 
-func openFile(filePath string) (*os.File, error) {
+func OpenFile(filePath string) (*os.File, error) {
 	file, err := os.Open(filePath)
 	Check(err)
 	return file, nil
 }
 
-func GetBufferedScanner(filePath string) (*bufio.Scanner, *os.File, error) {
-	file, err := openFile(filePath)
-	Check(err)
-
+func GetBufferedScanner(file *os.File) (*bufio.Scanner, error) {
 	scanner := bufio.NewScanner(file)
-	return scanner, file, nil
+	return scanner, nil
 }
 
 func GetPath(relativePath string) (fullPath string) {
