@@ -24,6 +24,8 @@ func Day1(inputFile string) {
 
 	// Solving
 	fmt.Printf("Part 1: %d\n", Part1(scanner))
+	file, err = utils.OpenFile(path)
+	utils.Check(err)
 	scanner, err = utils.GetBufferedScanner(file)
 	utils.Check(err)
 	fmt.Printf("Part 2: %d\n", Part2(scanner))
@@ -57,19 +59,33 @@ func Part1(scanner *bufio.Scanner) (int) {
 }
 
 func Part2(scanner *bufio.Scanner) (int) {
-	topThreeCalories := 0
+	currentCalories := 0
 	minHeap := &utils.MinHeap{}
-	heap.Init(minHeap)
-	heap.Push(minHeap, 3)
-	heap.Push(minHeap, 4)
-	heap.Push(minHeap, 1)
-	// for scanner.Scan() {
 
-	// }
+	for scanner.Scan() {
+		line := scanner.Text()
 
-	// sum values in heap
+		if len(line) == 0 {
+			if minHeap.Len() < 3 {
+				heap.Push(minHeap, currentCalories)
+			} else if minHeap.Peek().(int) < currentCalories {
+				heap.Pop(minHeap)
+				heap.Push(minHeap, currentCalories)
+			}
+			currentCalories = 0
+		} else {
+			num, err := strconv.Atoi(line)
+			utils.Check(err)
+			currentCalories += num
+		}
+	}
 
-	return topThreeCalories
+	fmt.Println(*minHeap)
+    sum := 0
+    for _, value := range []int(*minHeap) {
+        sum += value
+    }
+    return sum
 }
 
 func main() {

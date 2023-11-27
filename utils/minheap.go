@@ -2,12 +2,11 @@ package utils
 
 type MinHeap []int
 
-func (h MinHeap) Len() int           { return len(h) }
+// Interface stuffs
 func (h MinHeap) Less(i, j int) bool { return h[i] < h[j] }
+
 func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
 
-// function Len() for type MinHeap with alias mh that returns int
-// what's the point of this?
 func (h MinHeap) Len() int {
 	return len(h)
 }
@@ -21,4 +20,13 @@ func (h *MinHeap) Pop() interface{} {
 	last := oldHeap[len(oldHeap) - 1]
 	*h = oldHeap[:len(oldHeap) - 1]
 	return last
+}
+
+// Non interface stuffs
+func (h *MinHeap) Peek() interface{} {
+	heap := *h 
+	if len(heap) > 0 {
+		return heap[0]
+	}
+	return 0
 }
