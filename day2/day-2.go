@@ -7,22 +7,36 @@ import (
 	utils "github.com/spectregray/aoc-2022/utils"
 )
 
+var pointsMap = map[string]int{
+	"X": 1,
+	"Y": 2,
+	"Z": 3,
+	"A": 1,
+	"B": 2,
+	"C": 3,
+}
+// a rock, b paper, c scissors
+// x rock, y paper, z scissors
+
+// key beats value; key is me
+var victoryMap = map[string]string{
+	"X": "C",
+	"Y": "A",
+	"Z": "B",
+}
+// value loses to key; key is elf
+var predictedLossMap = map[string]int{
+	"A": 3, 
+	"B": 1,
+	"C": 2,
+}
+var predictedWinMap = map[string]int{
+	"A": 2,
+	"B": 3,
+	"C": 1,
+}
+
 func part1(scanner *bufio.Scanner) (int) {
-	pointsMap := map[string]int{
-		"X": 1,
-		"Y": 2,
-		"Z": 3,
-		"A": 1,
-		"B": 2,
-		"C": 3,
-	}
-	// a rock, b paper, c scissors
-	// x rock, y paper, z scissors
-	victoryMap := map[string]string{
-		"X": "C",
-		"Y": "A",
-		"Z": "B",
-	}
 	totalScore := 0
 
 	for scanner.Scan() {
@@ -44,7 +58,25 @@ func part1(scanner *bufio.Scanner) (int) {
 }
 
 func part2(scanner *bufio.Scanner) (int) {
-	return 0
+	totalScore := 0
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		inputs := strings.Split(line, " ")
+
+		switch inputs[1] {
+		case "X":
+			totalScore += predictedLossMap[inputs[0]]
+		case "Y":
+			totalScore += pointsMap[inputs[0]]
+			totalScore += 3 // points for tie
+		case "Z":
+			totalScore += predictedWinMap[inputs[0]]
+			totalScore += 6 // points for win
+		}
+	}
+
+	return totalScore
 }
 
 // I hate the system I used in day 1 I am just going to do everything in main :)
