@@ -7,7 +7,34 @@ import (
 )
 
 func part1(scanner *bufio.Scanner) (int) {
-	return 0
+	prioritySum := 0
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		halfLen := len(line) / 2
+		firstHalfSet := make(map[byte]bool)
+
+		// iterate through first half, add to set
+		for i := 0; i < halfLen; i++ {
+			firstHalfSet[line[i]] = true
+		}
+
+		// iterate through second half, check against set
+		for i := halfLen; i < len(line); i++ {
+			_, ok := firstHalfSet[line[i]]
+			if ok {
+				ascii := int(line[i])
+				if ascii >= 97 {
+					prioritySum += ascii - 96
+				} else if ascii >= 65 {
+					prioritySum += ascii - 64 + 26
+				}
+				break
+			}
+		}
+	}
+
+	return prioritySum
 }
 
 func part2(scanner *bufio.Scanner) (int) {

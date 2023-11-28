@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	utils "github.com/spectregray/aoc-2022/utils"
+	utils "github.com/spectregray/aoc-2022/src/utils"
 )
 
 func part1(scanner *bufio.Scanner) int {
