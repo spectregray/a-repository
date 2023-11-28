@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strconv"
 	"container/heap" // I know the heap is of size 3 but just for the lols :)
-	utils "github.com/spectregray/aoc-2022/utils"
+	utils "github.com/spectregray/aoc-2022/src/utils"
 )
 
 // trying different solution setups lol

@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"strings"
-	utils "github.com/spectregray/aoc-2022/utils"
+	utils "github.com/spectregray/aoc-2022/src/utils"
 )
 
 var pointsMap = map[string]int{
