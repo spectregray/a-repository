@@ -42,8 +42,34 @@ func part1(scanner *bufio.Scanner) int {
 	return overlapCount
 }
 
+// for part 2 i just changed a 1 to a 0 lol
 func part2(scanner *bufio.Scanner) int {
-	return 0
+	overlapCount := 0
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		elves := strings.Split(line, ",")
+		var intervals [][]int
+
+		for _, element := range elves {
+			interval := strings.Split(element, "-")
+			start, err := strconv.Atoi(interval[0])
+			utils.Check(err)
+			end, err := strconv.Atoi(interval[1])
+			utils.Check(err)
+			intervals = append(intervals, []int{start, end})
+		}
+
+		sort.Slice(intervals, func(i, j int) bool {
+			return intervals[i][0] < intervals[j][0]
+		})
+		
+		if intervals[0][1] >= intervals[1][0] {
+			overlapCount += 1
+		}
+	}
+
+	return overlapCount
 }
 
 func main() {
