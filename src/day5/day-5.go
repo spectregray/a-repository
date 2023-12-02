@@ -58,7 +58,6 @@ func part1(scanner *bufio.Scanner) string {
 			}
 			crates[from] = crates[from][:len(crates[from]) - count]
 			crates[to] = append(crates[to], removed...)
-			fmt.Println(crates[from], crates[to], count)
 		}
 	}
 
@@ -70,8 +69,62 @@ func part1(scanner *bufio.Scanner) string {
 	return topCrates
 }
 
-func part2(scanner *bufio.Scanner) int {
-	return 0
+// same as part 1, without reversing the removed slice
+func part2(scanner *bufio.Scanner) string {
+	topCrates := ""
+	crates := make([][]byte, 9)
+	crateStrings := make([]string, 0)
+	initialized := false
+
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		if !initialized {
+			if line == "" {
+				// now go through the lines backwards, initializing 2d array
+				for i := len(crateStrings) - 2; i >= 0; i-- {
+					slice := crateStrings[i]
+					for j := 1; j < len(slice); j += 4 {
+						if slice[j] != 32 {
+							index := j / 4 // index of the crate
+							crates[index] = append(crates[index], slice[j])
+						}
+					}
+				}
+				// debugging to make sure crates parsed right
+				// for _, crate := range crates {
+				// 	for _, item := range crate {
+				// 		fmt.Printf("%c", item)
+				// 	}
+				// 	fmt.Println("")
+				// }
+				initialized = true
+			} else {
+				crateStrings = append(crateStrings, line)
+			}
+		} else if line[:4] == "move" {
+			fields := strings.Fields(line)
+			count, err := strconv.Atoi(fields[1])
+			utils.Check(err)
+			from, err := strconv.Atoi(fields[3])
+			utils.Check(err)
+			from -= 1
+			to, err := strconv.Atoi(fields[5])
+			utils.Check(err)
+			to -= 1
+
+			removed := crates[from][len(crates[from]) - count:]
+			crates[from] = crates[from][:len(crates[from]) - count]
+			crates[to] = append(crates[to], removed...)
+		}
+	}
+
+	// find top Crates 
+	for _, crate := range crates {
+		last := crate[len(crate) - 1]
+		topCrates = topCrates + string(last)
+	}
+	return topCrates
 }
 
 func main() {
@@ -93,7 +146,7 @@ func main() {
 	scanner, err = utils.GetBufferedScanner(file)
 	utils.Check(err)
 
-	fmt.Printf("Part 2: %d\n", part2(scanner))
+	fmt.Printf("Part 2: %s\n", part2(scanner))
 
 	// Error handling
 	if err := scanner.Err(); err != nil {
